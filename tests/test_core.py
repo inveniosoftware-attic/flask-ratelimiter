@@ -23,10 +23,10 @@
 
 from __future__ import absolute_import
 
-import unittest
-from .helpers import FlaskTestCase
+import six
+from .helpers import FlaskTestCase, skipUnless
 
-from flask import Blueprint, Flask, request, url_for, g, current_app
+from flask import request, g
 from flask.ext.ratelimiter import RateLimiter, \
     ratelimit
 try:
@@ -51,30 +51,30 @@ class TestRateLimiter(FlaskTestCase):
 
         with self.app.test_client() as c:
             res = c.get('/limit')
-            assert request.endpoint == 'test_limit'
-            assert g._rate_limit_info.limit == 2
-            assert g._rate_limit_info.remaining == 1
-            assert g._rate_limit_info.limit_exceeded == False
-            assert g._rate_limit_info.per == 10
-            assert g._rate_limit_info.send_x_headers == True
-            assert res.status_code == 200
+            self.assertEqual(request.endpoint, 'test_limit')
+            self.assertEqual(g._rate_limit_info.limit, 2)
+            self.assertEqual(g._rate_limit_info.remaining, 1)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, False)
+            self.assertEqual(g._rate_limit_info.per, 10)
+            self.assertEqual(g._rate_limit_info.send_x_headers, True)
+            self.assertEqual(res.status_code, 200)
 
             res = c.get('/limit')
-            assert g._rate_limit_info.limit == 2
-            assert g._rate_limit_info.remaining == 0
-            assert g._rate_limit_info.limit_exceeded == True
-            assert g._rate_limit_info.per == 10
-            assert g._rate_limit_info.send_x_headers == True
-            assert res.get_data() == 'Rate limit was exceeded'
-            assert res.status_code == 429
+            self.assertEqual(g._rate_limit_info.limit, 2)
+            self.assertEqual(g._rate_limit_info.remaining, 0)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, True)
+            self.assertEqual(g._rate_limit_info.per, 10)
+            self.assertEqual(g._rate_limit_info.send_x_headers, True)
+            self.assertIn(six.b('Rate limit was exceeded'), res.data)
+            self.assertEqual(res.status_code, 429)
 
             res = c.get('/limit')
-            assert g._rate_limit_info.limit == 2
-            assert g._rate_limit_info.remaining == 0
-            assert g._rate_limit_info.limit_exceeded == True
-            assert res.status_code == 429
+            self.assertEqual(g._rate_limit_info.limit, 2)
+            self.assertEqual(g._rate_limit_info.remaining, 0)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, True)
+            self.assertEqual(res.status_code, 429)
 
-    @unittest.skipUnless(is_cache_installed, 'Flask-Cache is not installed')
+    @skipUnless(is_cache_installed, 'Flask-Cache is not installed')
     def test_flask_cache_prefix(self):
         cache = Cache(self.app, config={'CACHE_TYPE': 'redis'})
         prefix = 'flask_cache_prefix'
@@ -84,7 +84,7 @@ class TestRateLimiter(FlaskTestCase):
         self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
                                    {'cache': cache})
         r = RateLimiter(self.app)
-        assert self.app.config['RATELIMITER_KEY_PREFIX'] == prefix
+        self.assertEqual(self.app.config['RATELIMITER_KEY_PREFIX'], prefix)
 
     def test_ratelimit_headers(self):
         rl = RateLimiter(self.app)
@@ -96,10 +96,10 @@ class TestRateLimiter(FlaskTestCase):
 
         with self.app.test_client() as c:
             res = c.get('/limit3')
-            assert request.endpoint == 'test_limit3'
-            assert int(res.headers.get('X-RateLimit-Limit')) == 2
-            assert int(res.headers.get('X-RateLimit-Remaining')) == 1
-            assert res.headers.get('X-RateLimit-Reset', None) != None
+            self.assertEqual(request.endpoint, 'test_limit3')
+            self.assertEqual(int(res.headers.get('X-RateLimit-Limit')), 2)
+            self.assertEqual(int(res.headers.get('X-RateLimit-Remaining')), 1)
+            self.assertIsNot(res.headers.get('X-RateLimit-Reset', None), None)
 
     def test_ratelimit_no_headers_sent(self):
         self.app.config.setdefault('RATELIMITER_INJECT_X_HEADERS', False)
@@ -112,9 +112,9 @@ class TestRateLimiter(FlaskTestCase):
 
         with self.app.test_client() as c:
             res = c.get('/limit4')
-            assert request.endpoint == 'test_limit4'
-            assert res.headers.get('X-RateLimit-Limit', None) == None
-            assert res.headers.get('X-RateLimit-Remaining', None) == None
+            self.assertEqual(request.endpoint, 'test_limit4')
+            self.assertEqual(res.headers.get('X-RateLimit-Limit', None), None)
+            self.assertEqual(res.headers.get('X-RateLimit-Remaining', None), None)
 
 
 class TestGetBackend(FlaskTestCase):
@@ -127,10 +127,10 @@ class TestGetBackend(FlaskTestCase):
         tests get_backend function with correct input
         """
         backend = RateLimiter.get_backend('SimpleRedisBackend')
-        assert backend.__name__ == 'SimpleRedisBackend'
+        self.assertEqual(backend.__name__, 'SimpleRedisBackend')
 
     def test_get_incorrect_backend(self):
         """
         tests get_backend function with incorrect input
         """
-        assert RateLimiter.get_backend('CrazyBackendX').__name__ == 'SimpleRedisBackend'
+        self.assertEqual(RateLimiter.get_backend('CrazyBackendX').__name__, 'SimpleRedisBackend')

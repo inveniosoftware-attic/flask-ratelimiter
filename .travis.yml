@@ -31,6 +31,9 @@ python:
   - "2.7"
   - "3.3"
 
+services:
+  - redis
+
 install:
   - pip install --upgrade pip  --use-mirrors
   - pip install coveralls --use-mirrors

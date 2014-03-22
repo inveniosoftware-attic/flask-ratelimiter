@@ -21,6 +21,8 @@
 ## granted to it by virtue of its status as an Intergovernmental Organization
 ## or submit itself to any jurisdiction.
 
+from six import iteritems
+
 
 class Backend(object):
     """
@@ -29,7 +31,7 @@ class Backend(object):
 
     def __init__(self, **kwargs):
 
-        for key, value in kwargs.iteritems():
+        for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
     def update(self):

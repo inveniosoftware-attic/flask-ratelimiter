@@ -24,6 +24,12 @@
 from setuptools import setup
 import os
 import re
+import sys
+
+tests_require_extra = []
+
+if sys.version_info < (2, 7):
+    tests_require_extra = ['unittest2']
 
 # Get the version string.  Cannot be done with import!
 with open(os.path.join('flask_ratelimiter', 'version.py'), 'rt') as f:
@@ -39,7 +45,8 @@ setup(
     license='GPLv2',
     author='Invenio collaboration',
     author_email='info@invenio-software.org',
-    description='Flask-RateLimiter is an extension for Flask that adds support for rate limiting.',
+    description='Flask-RateLimiter is an extension for Flask '
+                'that adds support for rate limiting.',
     long_description=open('README.rst').read(),
     packages=['flask_ratelimiter', 'flask_ratelimiter.backends'],
     zip_safe=False,
@@ -59,5 +66,5 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     test_suite='nose.collector',
-    tests_require=['nose', 'coverage'],
+    tests_require=['nose', 'coverage', 'redis'] + tests_require_extra,
 )

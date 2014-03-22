@@ -24,7 +24,7 @@
 from __future__ import absolute_import
 
 import unittest
-from .helpers import FlaskTestCase
+from .helpers import FlaskTestCase, skipUnless
 from flask.ext.ratelimiter import RateLimiter
 from flask.ext.ratelimiter.backends import *
 try:
@@ -33,63 +33,62 @@ try:
 except ImportError:
     is_cache_installed = False
 
-from flask import Blueprint, Flask, request, url_for, g, current_app
-
-
 
 class TestAbstractBackend(FlaskTestCase):
 
-
     def test_backend(self):
         b = Backend(key1='key1', key2='key2')
-        assert b.key1 == 'key1'
+        self.assertEqual(b.key1, 'key1')
         self.assertRaises(NotImplementedError, b.update)
 
 
 class TestSimpleRedisBackend(FlaskTestCase):
 
-
     def test_backend(self):
         b = SimpleRedisBackend()
-        assert b.redis != None
-        assert b.pipeline.__class__.__name__ == 'Pipeline'
+        self.assertIsNot(b.redis, None)
+        self.assertEqual(b.pipeline.__class__.__name__, 'Pipeline')
 
         limit_exceeded, remaining, reset = b.update('redis_backend', 3, 5)
-        assert limit_exceeded == False
-        assert remaining == 2
+        self.assertEqual(limit_exceeded, False)
+        self.assertEqual(remaining, 2)
 
         limit_exceeded, remaining, reset = b.update('redis_backend', 3, 5)
-        assert limit_exceeded == False
-        assert remaining == 1
+        self.assertEqual(limit_exceeded, False)
+        self.assertEqual(remaining, 1)
 
         limit_exceeded, remaining, reset = b.update('redis_backend', 3, 5)
-        assert limit_exceeded == True
-        assert remaining == 0
+        self.assertEqual(limit_exceeded, True)
+        self.assertEqual(remaining, 0)
 
 
 class TestFlaskCacheRedisBackend(FlaskTestCase):
 
-    @unittest.skipUnless(is_cache_installed, 'Flask-Cache is not installed')
+    @skipUnless(is_cache_installed, 'Flask-Cache is not installed')
     def test_backend_with_app(self):
         cache = Cache(self.app, config={'CACHE_TYPE': 'redis'})
 
-        self.app.config.setdefault('RATELIMITER_BACKEND', 'FlaskCacheRedisBackend')
+        self.app.config.setdefault('RATELIMITER_BACKEND',
+                                   'FlaskCacheRedisBackend')
         self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
                                    {'cache': cache})
         r = RateLimiter(self.app)
 
-        limit_exceeded, remaining, reset = r.backend.update('flask_cache_backend', 3, 5)
-        assert limit_exceeded == False
-        assert remaining == 2
+        limit_exceeded, remaining, reset = r.backend.update(
+            'flask_cache_backend', 3, 5)
+        self.assertEqual(limit_exceeded, False)
+        self.assertEqual(remaining, 2)
 
-        limit_exceeded, remaining, reset = r.backend.update('flask_cache_backend', 3, 5)
-        assert limit_exceeded == False
-        assert remaining == 1
+        limit_exceeded, remaining, reset = r.backend.update(
+            'flask_cache_backend', 3, 5)
+        self.assertEqual(limit_exceeded, False)
+        self.assertEqual(remaining, 1)
 
-        limit_exceeded, remaining, reset = r.backend.update('flask_cache_backend', 3, 5)
-        assert limit_exceeded == True
-        assert remaining == 0
+        limit_exceeded, remaining, reset = r.backend.update(
+            'flask_cache_backend', 3, 5)
+        self.assertEqual(limit_exceeded, True)
+        self.assertEqual(remaining, 0)
 
     def test_backend_wrong_cache(self):
-        self.assertRaises(ValueError, lambda: FlaskCacheRedisBackend('WrongCache'))
-
+        self.assertRaises(ValueError,
+                          lambda: FlaskCacheRedisBackend('WrongCache'))

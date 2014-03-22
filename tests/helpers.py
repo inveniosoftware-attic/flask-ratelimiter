@@ -21,7 +21,26 @@
 ## granted to it by virtue of its status as an Intergovernmental Organization
 ## or submit itself to any jurisdiction.
 
-from unittest import TestCase
+import sys
+
+if sys.version_info < (2, 7):
+    import functools
+    import nose
+    from unittest2 import TestCase
+
+    def skipUnless(condition, msg):
+        def decorated(test):
+            @functools.wraps(test)
+            def decorator(*args, **kwargs):
+                if condition:
+                    return test(*args, **kwargs)
+                raise nose.SkipTest(msg)
+            return decorator
+        return decorated
+
+else:
+    from unittest import TestCase, skipUnless
+
 from flask import Flask
 
 
@@ -36,3 +55,5 @@ class FlaskTestCase(TestCase):
         app.config['TESTING'] = True
         app.logger.disabled = True
         self.app = app
+
+__all__ = ['FlaskTestCase', 'skipUnless']

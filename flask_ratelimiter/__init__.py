@@ -51,8 +51,9 @@ Based on:
 
 from __future__ import absolute_import
 
-from flask import Blueprint, current_app, request, g
+from flask import current_app, request, g
 from functools import update_wrapper
+from six import iteritems
 
 
 class RateLimitInfo(object):
@@ -63,7 +64,7 @@ class RateLimitInfo(object):
 
     def __init__(self, **kwargs):
 
-        for key, value in kwargs.iteritems():
+        for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
 
