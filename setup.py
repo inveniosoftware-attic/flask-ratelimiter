@@ -66,5 +66,5 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     test_suite='nose.collector',
-    tests_require=['nose', 'coverage', 'redis'] + tests_require_extra,
+    tests_require=['nose', 'coverage', 'redis', 'flask_cache'] + tests_require_extra,
 )
