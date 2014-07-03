@@ -6,10 +6,10 @@ Flask-RateLimiter
     :target: https://travis-ci.org/inveniosoftware/flask-ratelimiter
 .. image:: https://coveralls.io/repos/inveniosoftware/flask-ratelimiter/badge.png?branch=master
     :target: https://coveralls.io/r/inveniosoftware/flask-ratelimiter
-.. image:: https://pypip.in/v/flask-ratelimiter/badge.png
-   :target: https://crate.io/packages/flask-ratelimiter/
-.. image:: https://pypip.in/d/flask-ratelimiter/badge.png
-   :target: https://crate.io/packages/flask-ratelimiter/
+.. image:: https://pypip.in/v/Flask-RateLimiter/badge.png
+   :target: https://pypi.python.org/pypi/Flask-RateLimiter/
+.. image:: https://pypip.in/d/Flask-RateLimiter/badge.png
+   :target: https://pypi.python.org/pypi/Flask-RateLimiter/
 
 Installation
 ============
