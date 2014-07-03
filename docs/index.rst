@@ -1,10 +1,17 @@
-**Flask-RateLimiter** is an extension for Flask that provides a rate limiting decorator.
+===================
+ Flask-RateLimiter
+===================
+
+Flask-RateLimiter
+=================
 
 .. image:: https://travis-ci.org/inveniosoftware/flask-ratelimiter.png?branch=master
     :target: https://travis-ci.org/inveniosoftware/flask-ratelimiter
 .. image:: https://coveralls.io/repos/inveniosoftware/flask-ratelimiter/badge.png?branch=master
     :target: https://coveralls.io/r/inveniosoftware/flask-ratelimiter
 
+Flask-RateLimiter is a Flask extension that provides rate limiting
+decorator.
 
 User's Guide
 ============
@@ -21,7 +28,7 @@ Flask-RateLimiter with Flask.
 
 
 API Reference
-============
+=============
 
 If you are looking for information on a specific function, class or
 method, this part of the documentation is for you.
