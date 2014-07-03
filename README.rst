@@ -1,6 +1,6 @@
-==============
-Flask-RateLimiter
-==============
+===================
+ Flask-RateLimiter
+===================
 
 .. image:: https://travis-ci.org/inveniosoftware/flask-ratelimiter.png?branch=master
     :target: https://travis-ci.org/inveniosoftware/flask-ratelimiter
@@ -11,6 +11,11 @@ Flask-RateLimiter
 .. image:: https://pypip.in/d/Flask-RateLimiter/badge.png
    :target: https://pypi.python.org/pypi/Flask-RateLimiter/
 
+About
+=====
+Flask-RateLimiter is a Flask extension that provides rate limiting
+decorator.
+
 Installation
 ============
 Flask-RateLimiter is on PyPI so all you need is: ::
@@ -18,19 +23,21 @@ Flask-RateLimiter is on PyPI so all you need is: ::
     pip install Flask-RateLimiter
 
 Documentation
-============
-Documentation is available at <http://flask-ratelimiter.readthedocs.org> or can be build using Sphinx: ::
+=============
+Documentation is readable at http://flask-ratelimiter.readthedocs.org or can be built using Sphinx: ::
 
+    git submodule init
+    git submodule update
     pip install Sphinx
     python setup.py build_sphinx
 
 Testing
 =======
-Running the tests are as simple as: ::
+Running the test suite is as simple as: ::
 
     python setup.py test
 
-or (to also show test coverage) ::
+or, to also show code coverage: ::
 
     source run-tests.sh
 
