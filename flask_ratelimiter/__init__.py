@@ -27,19 +27,22 @@ Flask extension
 
 Flask-RateLimiter is initialized like this:
 
->>> from flask import Flask
->>> from flask_ratelimiter import RateLimiter
->>> app = Flask('myapp')
->>> ext = RateLimiter(app=app)
+.. code-block:: pycon
 
+    >>> from flask import Flask
+    >>> from flask_ratelimiter import RateLimiter
+    >>> app = Flask('myapp')
+    >>> ext = RateLimiter(app=app)
 
 You can use ratelimit decorator like this:
 
->>> from flask_ratelimiter import ratelimit
->>>
->>> @ratelimit(300, 200)
->>> def some_view():
->>>     return 'HelloWorld'
+.. code-block:: pycon
+
+    >>> from flask_ratelimiter import ratelimit
+    >>>
+    >>> @ratelimit(300, 200)
+    >>> def some_view():
+    >>>     return 'HelloWorld'
 
 Based on:
 
@@ -83,16 +86,20 @@ class RateLimiter(object):
 
     Initialization of the extension:
 
-    >>> from flask import Flask
-    >>> from flask_ratelimiter import RateLimiter
-    >>> app = Flask('myapp')
-    >>> ext = RateLimiter(app=app)
+    .. code-block:: pycon
+
+        >>> from flask import Flask
+        >>> from flask_ratelimiter import RateLimiter
+        >>> app = Flask('myapp')
+        >>> ext = RateLimiter(app=app)
 
     or alternatively using the factory pattern:
 
-    >>> app = Flask('myapp')
-    >>> ext = RateLimiter()
-    >>> ext.init_app(app)
+    .. code-block:: pycon
+
+        >>> app = Flask('myapp')
+        >>> ext = RateLimiter()
+        >>> ext.init_app(app)
     """
     def __init__(self, app=None):
         self.app = app

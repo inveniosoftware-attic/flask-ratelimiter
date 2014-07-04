@@ -14,11 +14,11 @@ A Minimal Example
 A minimal Flask-RateLimiter usage example looks like this. First create the
 application and initialize the extension:
 
->>> from flask import Flask
->>> from flask_ratelimiter import RateLimiter
->>> app = Flask('myapp')
->>> ext = RateLimiter(app=app)
+.. code-block:: pycon
 
->>> CHANGEME
+    >>> from flask import Flask
+    >>> from flask_ratelimiter import RateLimiter
+    >>> app = Flask('myapp')
+    >>> ext = RateLimiter(app=app)
 
 .. literalinclude:: ../tests/helpers.py
