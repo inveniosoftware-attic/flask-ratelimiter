@@ -13,7 +13,7 @@ The development version can be downloaded from `its page at GitHub
     git clone https://github.com/inveniosoftware/flask-ratelimiter.git
     cd flask-ratelimiter
     python setup.py develop
-    source run-tests.sh
+    ./run-tests.sh
 
 Requirements
 ------------
