@@ -9,11 +9,15 @@
 
 from __future__ import absolute_import
 
+import redis
 import unittest
-from .helpers import FlaskTestCase, skipUnless
+
 from flask.ext.ratelimiter import RateLimiter
 from flask.ext.ratelimiter.backends import *
 from flask.ext.cache import Cache
+
+from .helpers import FlaskTestCase, skipUnless
+
 
 class TestAbstractBackend(FlaskTestCase):
 
@@ -24,6 +28,11 @@ class TestAbstractBackend(FlaskTestCase):
 
 
 class TestSimpleRedisBackend(FlaskTestCase):
+
+    def setUp(self):
+        redis.StrictRedis().flushdb()
+        super(TestSimpleRedisBackend, self).setUp()
+
 
     def test_backend(self):
         b = SimpleRedisBackend()
@@ -44,6 +53,10 @@ class TestSimpleRedisBackend(FlaskTestCase):
 
 
 class TestFlaskCacheRedisBackend(FlaskTestCase):
+
+    def setUp(self):
+        redis.StrictRedis().flushdb()
+        super(TestFlaskCacheRedisBackend, self).setUp()
 
     def test_backend_with_app(self):
         cache = Cache(self.app, config={'CACHE_TYPE': 'redis'})
