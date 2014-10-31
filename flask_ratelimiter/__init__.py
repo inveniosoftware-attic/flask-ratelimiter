@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-##
-## This file is part of Flask-RateLimiter
-## Copyright (C) 2014 CERN.
-##
-## Flask-RateLimiter is free software; you can redistribute it and/or
-## modify it under the terms of the Revised BSD License; see LICENSE
-## file for more details.
+#
+# This file is part of Flask-RateLimiter
+# Copyright (C) 2014 CERN.
+#
+# Flask-RateLimiter is free software; you can redistribute it and/or
+# modify it under the terms of the Revised BSD License; see LICENSE
+# file for more details.
 
 """
 Flask extension
@@ -124,7 +124,8 @@ class RateLimiter(object):
                 return response
 
         options = config['RATELIMITER_BACKEND_OPTIONS']
-        self.backend = RateLimiter.get_backend(config['RATELIMITER_BACKEND'])(**options)
+        self.backend = RateLimiter.get_backend(config['RATELIMITER_BACKEND'])(
+            **options)
 
     @staticmethod
     def get_backend(name):
@@ -167,7 +168,8 @@ def ratelimit(limit, per=300, send_x_headers=True,
             ratelimiter = current_app.extensions['ratelimiter']
             prefix = current_app.config['RATELIMITER_KEY_PREFIX']
             key = prefix + '/%s/%s/' % (key_func(), scope_func())
-            limit_exceeded, remaining, reset = ratelimiter.backend.update(key, limit, per)
+            limit_exceeded, remaining, reset = ratelimiter.backend.update(
+                key, limit, per)
 
             info = RateLimitInfo(limit=limit,
                                  per=per,
