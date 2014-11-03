@@ -1,9 +1,9 @@
-Changelog
-=========
+Changes
+=======
 
 Here you can see the full list of changes between each Flask-RateLimiter
 release.
 
 Version 0.1.0 (released 2014-06-27)
------------------------------------
+
 - Initial public release.

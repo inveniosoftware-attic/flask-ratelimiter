@@ -29,7 +29,7 @@ You can use ratelimit decorator like this:
     >>>     return 'HelloWorld'
 
 It is based on snippet of code by Armin Ronacher from
-`http://flask.pocoo.org/snippets/70/`_.
+http://flask.pocoo.org/snippets/70/.
 """
 
 from __future__ import absolute_import
