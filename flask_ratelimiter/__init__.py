@@ -65,8 +65,7 @@ def on_over_limit(rate_limit_info):
 
 class RateLimiter(object):
 
-    """
-    Implement RateLimiter extension.
+    """Implement RateLimiter extension.
 
     Initialization of the extension can be done via following code:
 
@@ -85,14 +84,16 @@ class RateLimiter(object):
         >>> ext = RateLimiter()
         >>> ext.init_app(app)
     """
-    def __init__(self, app=None):
-        self.app = app
 
+    def __init__(self, app=None):
+        """Create extension instance."""
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app):
         """Initialize a Flask extension."""
+        self.app = app
+
         if not hasattr(app, 'extensions'):
             app.extensions = {}
         if 'ratelimiter' in app.extensions:
@@ -186,6 +187,4 @@ def ratelimit(limit, per=300, send_x_headers=True,
         return update_wrapper(rate_limited, f)
     return decorator
 
-__all__ = [
-    'RateLimiter', '__version__', 'ratelimit'
-]
+__all__ = ('RateLimiter', '__version__', 'ratelimit')

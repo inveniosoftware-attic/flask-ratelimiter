@@ -7,8 +7,12 @@
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
 
+"""Backend implementations."""
+
 from __future__ import absolute_import
 
 from .backend import Backend
 from .simpleredis_backend import SimpleRedisBackend
 from .flaskcacheredis_backend import FlaskCacheRedisBackend
+
+__all__ = ('Backend', 'SimpleRedisBackend', 'FlaskCacheRedisBackend')

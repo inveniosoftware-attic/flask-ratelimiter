@@ -7,8 +7,7 @@
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
 
-"""
-Version information for Flask-RateLimiter
+"""Version information for Flask-RateLimiter.
 
 This file is imported by ``flask_ratelimiter.__init__``, and parsed by
 ``setup.py`` as well as ``docs/conf.py``.

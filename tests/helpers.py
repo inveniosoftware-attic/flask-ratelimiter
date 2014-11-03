@@ -42,4 +42,4 @@ class FlaskTestCase(TestCase):
         app.logger.disabled = True
         self.app = app
 
-__all__ = ['FlaskTestCase', 'skipUnless']
+__all__ = ('FlaskTestCase', 'skipUnless')

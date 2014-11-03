@@ -7,18 +7,21 @@
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
 
+"""Implement Flask-Cache backend."""
+
 from __future__ import absolute_import
 
 from .simpleredis_backend import SimpleRedisBackend
 
 
 class FlaskCacheRedisBackend(SimpleRedisBackend):
-    """
-    Backend which uses Flask-Cache to store keys in Redis.
-    """
+
+    """Flask-Cache backend that stores keys in Redis."""
+
     expiration_window = 10
 
     def __init__(self, cache=None, **kwargs):
+        """Store Flask-Cache instance."""
         self.cache = cache
         if self.cache.__class__.__name__ != 'Cache':
             raise ValueError('Incorrect cache was passed as an argument')

@@ -7,22 +7,22 @@
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
 
+"""Abstract backend definition."""
+
 from six import iteritems
 
 
 class Backend(object):
-    """
-    Abstract backend for inheriting purposes.
-    """
+
+    """Abstract backend for inheriting purposes."""
 
     def __init__(self, **kwargs):
-
+        """Store all keyword arguments as instance attributes."""
         for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
     def update(self):
-        """
-        Every new backend needs to implement this function.
+        """Every new backend needs to implement this function.
 
         Function needs to return tuple with two values:
         * limit_exceeded - boolean, checks if limit was exceeded
