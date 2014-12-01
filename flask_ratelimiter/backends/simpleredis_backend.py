@@ -30,7 +30,7 @@ class SimpleRedisBackend(Backend):
     def __init__(self, **kwargs):
         """Create Redis connetion instance."""
         super(SimpleRedisBackend, self).__init__(**kwargs)
-        self.redis = Redis()
+        self.redis = Redis(**kwargs)
         self.pipeline = self.redis.pipeline()
 
     def update(self, key_prefix, limit, per):
