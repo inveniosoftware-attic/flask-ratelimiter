@@ -1,8 +1,8 @@
 ======================================
- Flask-RateLimiter v0.1.0 is released
+ Flask-RateLimiter v0.2.0 is released
 ======================================
 
-Flask-RateLimiter v0.1.0 was released on June 27, 2014.
+Flask-RateLimiter v0.2.0 was released on December 16, 2014.
 
 About
 -----
@@ -13,7 +13,12 @@ decorator.
 What's new
 ----------
 
-- Initial public release.
+- The Flask-RateLimiter extension is now released under more permissive
+  Revised BSD License. (#8)
+- Minor documentation updates. (#4)
+- Optionally callable limit argument. (#9)
+- Redis backend accepts keyword arguments from
+  RATELIMITER_BACKEND_OPTIONS config variable.  (#12 #13)
 
 Installation
 ------------
@@ -23,7 +28,7 @@ Installation
 Documentation
 -------------
 
-   http://flask-ratelimiter.readthedocs.org/en/v0.1.0
+   http://flask-ratelimiter.readthedocs.org/en/v0.2.0
 
 Homepage
 --------

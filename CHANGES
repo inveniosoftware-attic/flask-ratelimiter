@@ -4,6 +4,15 @@ Changes
 Here you can see the full list of changes between each Flask-RateLimiter
 release.
 
+Version 0.2.0 (released 2014-12-16)
+
+- The Flask-RateLimiter extension is now released under more permissive
+  Revised BSD License. (#8)
+- Minor documentation updates. (#4)
+- Optionally callable limit argument. (#9)
+- Redis backend accepts keyword arguments from
+  RATELIMITER_BACKEND_OPTIONS config variable.  (#12 #13)
+
 Version 0.1.0 (released 2014-06-27)
 
 - Initial public release.

@@ -7,9 +7,12 @@
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
 
-include LICENSE AUTHORS CHANGES README.rst
+include *.rst
 include .coveragerc run-tests.sh
+include .travis.yml
+include LICENSE AUTHORS CHANGES README.rst
 include docs/*.rst docs/*.py docs/Makefile
 include tests/*.py
-recursive-include docs/_themes *.py *.css *.css_t *.conf *.html README
+include tox.ini
 recursive-include docs/_templates *.html
+recursive-include docs/_themes *.py *.css *.css_t *.conf *.html README
