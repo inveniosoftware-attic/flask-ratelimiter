@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Flask-RateLimiter
-# Copyright (C) 2014 CERN.
+# Copyright (C) 2014, 2015 CERN.
 #
 # Flask-RateLimiter is free software; you can redistribute it and/or
 # modify it under the terms of the Revised BSD License; see LICENSE
@@ -43,7 +43,8 @@ setup(
         'six',
     ],
     extras_require={
-        'docs': ['sphinx'],
+        'docs': ['pep257', 'sphinx'],
+        'redis': ['redis']
     },
     classifiers=[
         'Environment :: Web Environment',

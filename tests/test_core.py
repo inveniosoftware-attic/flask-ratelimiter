@@ -7,14 +7,19 @@
 # modify it under the terms of the Revised BSD License; see LICENSE
 # file for more details.
 
+"""Test core rate limiter funcionality."""
+
 from __future__ import absolute_import
 
+from os import environ
+
+from flask import g, request
+from flask.ext.ratelimiter import RateLimiter, ratelimit
+
 import six
+
 from .helpers import FlaskTestCase, skipUnless
 
-from flask import request, g
-from flask.ext.ratelimiter import RateLimiter, \
-    ratelimit
 try:
     from flask.ext.cache import Cache
     is_cache_installed = True
@@ -22,13 +27,16 @@ except ImportError:
     is_cache_installed = False
 
 
-
 class TestRateLimiter(FlaskTestCase):
-    """
-    Tests of rate limiting.
-    """
+
+    """Test rate limiting functionality."""
+
     def test_rate_limiting_simple_redis_backend(self):
-        rl = RateLimiter(self.app)
+        """Test rate limiter with simple Redis backend."""
+        self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
+                                   {'host': environ.get('REDIS_HOST',
+                                                        'localhost')})
+        RateLimiter(self.app)
 
         @self.app.route('/limit')
         @ratelimit(2, 10)
@@ -62,18 +70,24 @@ class TestRateLimiter(FlaskTestCase):
 
     @skipUnless(is_cache_installed, 'Flask-Cache is not installed')
     def test_flask_cache_prefix(self):
+        """Test rate limiter with Flask-Cache Redis backend."""
         cache = Cache(self.app, config={'CACHE_TYPE': 'redis'})
         prefix = 'flask_cache_prefix'
 
         self.app.config.setdefault('CACHE_KEY_PREFIX', prefix)
-        self.app.config.setdefault('RATELIMITER_BACKEND', 'FlaskCacheRedisBackend')
+        self.app.config.setdefault('RATELIMITER_BACKEND',
+                                   'FlaskCacheRedisBackend')
         self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
                                    {'cache': cache})
-        r = RateLimiter(self.app)
+        RateLimiter(self.app)
         self.assertEqual(self.app.config['RATELIMITER_KEY_PREFIX'], prefix)
 
     def test_ratelimit_headers(self):
-        rl = RateLimiter(self.app)
+        """Test rate limiter backend options."""
+        self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
+                                   {'host': environ.get('REDIS_HOST',
+                                                        'localhost')})
+        RateLimiter(self.app)
 
         @self.app.route('/limit3')
         @ratelimit(2, 10)
@@ -88,8 +102,12 @@ class TestRateLimiter(FlaskTestCase):
             self.assertIsNot(res.headers.get('X-RateLimit-Reset', None), None)
 
     def test_ratelimit_no_headers_sent(self):
+        """Test rate limiter header sending."""
         self.app.config.setdefault('RATELIMITER_INJECT_X_HEADERS', False)
-        rl = RateLimiter(self.app)
+        self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
+                                   {'host': environ.get('REDIS_HOST',
+                                                        'localhost')})
+        RateLimiter(self.app)
 
         @self.app.route('/limit4')
         @ratelimit(2, 10)
@@ -99,24 +117,22 @@ class TestRateLimiter(FlaskTestCase):
         with self.app.test_client() as c:
             res = c.get('/limit4')
             self.assertEqual(request.endpoint, 'test_limit4')
-            self.assertEqual(res.headers.get('X-RateLimit-Limit', None), None)
-            self.assertEqual(res.headers.get('X-RateLimit-Remaining', None), None)
+            self.assertEqual(res.headers.get('X-RateLimit-Limit', None),
+                             None)
+            self.assertEqual(res.headers.get('X-RateLimit-Remaining', None),
+                             None)
 
 
 class TestGetBackend(FlaskTestCase):
-    """
-    Tests get_backend function.
-    """
+
+    """Test get_backend functionality."""
 
     def test_get_correct_backend(self):
-        """
-        tests get_backend function with correct input
-        """
+        """Test get_backend function with correct input."""
         backend = RateLimiter.get_backend('SimpleRedisBackend')
         self.assertEqual(backend.__name__, 'SimpleRedisBackend')
 
     def test_get_incorrect_backend(self):
-        """
-        tests get_backend function with incorrect input
-        """
-        self.assertEqual(RateLimiter.get_backend('CrazyBackendX').__name__, 'SimpleRedisBackend')
+        """Test get_backend function with incorrect input."""
+        self.assertEqual(RateLimiter.get_backend('CrazyBackendX').__name__,
+                         'SimpleRedisBackend')
