@@ -173,7 +173,7 @@ def ratelimit(limit, per=300, send_x_headers=True,
                                                 scope=scope),
                 current_limit, per)
 
-            info = RateLimitInfo(limit=limit,
+            info = RateLimitInfo(limit=current_limit,
                                  per=per,
                                  limit_exceeded=limit_exceeded,
                                  remaining=remaining,

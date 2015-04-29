@@ -68,6 +68,51 @@ class TestRateLimiter(FlaskTestCase):
             self.assertEqual(g._rate_limit_info.limit_exceeded, True)
             self.assertEqual(res.status_code, 429)
 
+    def test_dynamic_ratelimit(self):
+        """Test that passing callable limit to @ratelimit behaves correctly"""
+        self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
+                                   {'host': environ.get('REDIS_HOST',
+                                                        'localhost')})
+        RateLimiter(self.app)
+
+        def dynamic_limit(default, **kwargs):
+            """
+            A function that returns a rate limit based on some incoming
+            information
+            The function may be passed key_func() and scope_func() as kwargs to
+            help to do that, but in this test we directly use the http header
+            to test functionality
+            """
+            self.assertIn('key', kwargs)
+            self.assertIn('scope', kwargs)
+            factor = request.headers.get('multiply_ratelimit')
+            if factor is None:
+                return default
+            return default * int(factor)
+
+        @self.app.route('/dynamic-limit')
+        @ratelimit(lambda **kwargs: dynamic_limit(default=2, **kwargs), 10)
+        def test_dynamic_limit():
+            return 'limit'
+
+        with self.app.test_client() as c:
+            res = c.get('/dynamic-limit')
+            self.assertEqual(g._rate_limit_info.limit, 2)
+            self.assertEqual(g._rate_limit_info.remaining, 1)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, False)
+            self.assertEqual(g._rate_limit_info.per, 10)
+            self.assertEqual(g._rate_limit_info.send_x_headers, True)
+            self.assertEqual(res.status_code, 200)
+
+            res = c.get('/dynamic-limit', headers={'multiply_ratelimit': 10})
+            self.assertEqual(g._rate_limit_info.limit, 20)
+            self.assertEqual(g._rate_limit_info.remaining, 18)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, False)
+            self.assertEqual(g._rate_limit_info.per, 10)
+            self.assertEqual(g._rate_limit_info.send_x_headers, True)
+            self.assertEqual(res.status_code, 200)
+
+
     @skipUnless(is_cache_installed, 'Flask-Cache is not installed')
     def test_flask_cache_prefix(self):
         """Test rate limiter with Flask-Cache Redis backend."""
