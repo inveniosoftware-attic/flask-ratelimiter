@@ -27,10 +27,12 @@ class SimpleRedisBackend(Backend):
 
     expiration_window = 10
 
-    def __init__(self, **kwargs):
+    def __init__(self, cache=None, **kwargs):
         """Create Redis connetion instance."""
         super(SimpleRedisBackend, self).__init__(**kwargs)
-        self.cache = Redis(**kwargs)
+        if cache is None:
+            cache = Redis(**kwargs)
+        self.cache = cache
 
     def update(self, key_prefix, limit, per):
         """Update database for specific key_prefix.

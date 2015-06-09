@@ -15,6 +15,7 @@ from os import environ
 
 from flask import g, request
 from flask.ext.ratelimiter import RateLimiter, ratelimit
+from redis import StrictRedis
 
 import six
 
@@ -72,6 +73,34 @@ class TestRateLimiter(FlaskTestCase):
 
             res = c.get('/limit')
             self.assertEqual(g._rate_limit_info.limit, 2)
+            self.assertEqual(g._rate_limit_info.remaining, 0)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, True)
+            self.assertEqual(res.status_code, 429)
+
+    def test_rate_limiting_custom_backend(self):
+        """Test rate limiter with a custom backend."""
+        # Intentionally set a bad host
+        self.app.config.setdefault('RATELIMITER_BACKEND_OPTIONS',
+                                   {'host': 'invalid-host'})
+        # Generate a good Redis client and attached backend
+        redis = StrictRedis(host=environ.get('REDIS_HOST', 'localhost'))
+        SimpleRedisBackend = RateLimiter.get_backend('SimpleRedisBackend')
+        redis_backend = SimpleRedisBackend(cache=redis)
+        RateLimiter(self.app, backend=redis_backend)
+
+        @self.app.route('/custom-backend-limit')
+        @ratelimit(1, 10)
+        def test_custom_backend_limit():
+            return 'custom-backend-limit'
+
+        with self.app.test_client() as c:
+            res = c.get('/custom-backend-limit')
+            self.assertEqual(request.endpoint, 'test_custom_backend_limit')
+            self.assertEqual(g._rate_limit_info.remaining, 0)
+            self.assertEqual(g._rate_limit_info.limit_exceeded, False)
+            self.assertEqual(res.status_code, 200)
+
+            res = c.get('/custom-backend-limit')
             self.assertEqual(g._rate_limit_info.remaining, 0)
             self.assertEqual(g._rate_limit_info.limit_exceeded, True)
             self.assertEqual(res.status_code, 429)
