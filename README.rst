@@ -16,6 +16,11 @@ About
 Flask-RateLimiter is a Flask extension that provides rate limiting
 decorator.
 
+CAVEAT LECTOR
+=============
+
+**Flask-RateLimiter is now deprecated in favour of** `Flask-Limiter <https://github.com/alisaifee/flask-limiter>`_
+
 Installation
 ============
 Flask-RateLimiter is on PyPI so all you need is: ::

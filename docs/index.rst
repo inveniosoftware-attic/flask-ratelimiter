@@ -3,7 +3,6 @@
 ===================
 .. currentmodule:: flask_ratelimiter
 
-
 .. raw:: html
 
     <p style="height:22px; margin:0 0 0 2em; float:right">
@@ -20,6 +19,10 @@
 
 Flask-RateLimiter is a Flask extension that provides rate limiting
 decorator.
+
+.. admonition:: **CAVEAT LECTOR**
+
+   **Flask-RateLimiter is now deprecated in favour of** `Flask-Limiter <https://github.com/alisaifee/flask-limiter>`_
 
 Contents
 --------
