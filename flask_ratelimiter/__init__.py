@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Flask-RateLimiter
-# Copyright (C) 2014 CERN.
+# Copyright (C) 2014, 2016 CERN.
 #
 # Flask-RateLimiter is free software; you can redistribute it and/or
 # modify it under the terms of the Revised BSD License; see LICENSE
@@ -43,7 +43,6 @@ from .version import __version__
 
 
 class RateLimitInfo(object):
-
     """Store information about rate limiting.
 
     Can be saved in 'g' object for further use.
@@ -64,7 +63,6 @@ def on_over_limit(rate_limit_info):
 
 
 class RateLimiter(object):
-
     """Implement RateLimiter extension.
 
     Initialization of the extension can be done via following code:

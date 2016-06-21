@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Flask-RateLimiter
-# Copyright (C) 2014, 2015 CERN.
+# Copyright (C) 2014, 2015, 2016 CERN.
 #
 # Flask-RateLimiter is free software; you can redistribute it and/or
 # modify it under the terms of the Revised BSD License; see LICENSE
@@ -39,7 +39,7 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=[
-        'Flask',
+        'Flask>=0.10.0,<0.11.0',
         'six',
     ],
     extras_require={
