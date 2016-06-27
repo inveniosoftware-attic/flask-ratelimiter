@@ -24,11 +24,11 @@ services:
 
 install:
   - pip install --upgrade pip
-  - pip install pep257 coveralls
+  - pip install pydocstyle coveralls
   - pip install -e .[docs]
 
 script:
-  - pep257 flask_ratelimiter
+  - pydocstyle flask_ratelimiter
   - "sphinx-build -qnNW docs docs/_build/html"
   - coverage run --source=flask_ratelimiter setup.py test
 

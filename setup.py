@@ -43,7 +43,7 @@ setup(
         'six',
     ],
     extras_require={
-        'docs': ['pep257', 'sphinx'],
+        'docs': ['pydocstyle>=1.0.0', 'sphinx>=1.4.2'],
         'redis': ['redis']
     },
     classifiers=[
