@@ -38,8 +38,8 @@ Homepage
 Good luck and thanks for choosing Flask-RateLimiter.
 
 | Invenio Development Team
-|   Email: info@invenio-software.org
+|   Email: info@inveniosoftware.org
 |   IRC: #invenio on irc.freenode.net
 |   Twitter: http://twitter.com/inveniosoftware
 |   GitHub: http://github.com/inveniosoftware
-|   URL: http://invenio-software.org
+|   URL: http://inveniosoftware.org
